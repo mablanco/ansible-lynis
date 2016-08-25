@@ -1,0 +1,24 @@
+#!/bin/bash
+set -x
+
+AUDITOR="automated"
+DATE=$(date +%Y%m%d)
+HOST=$(hostname)
+LOG_DIR="/var/log/lynis"
+REPORT="$LOG_DIR/report-${HOST}.${DATE}.log"
+DATA="$LOG_DIR/report-data-${HOST}.${DATE}.log"
+
+FROM="{{ report_from }}"
+TO="{{ report_to }}"
+
+cd /opt/lynis
+{% if deploy_method == "git" %}
+git pull
+{% endif %}
+./lynis audit system --auditor "${AUDITOR}" --cronjob > ${REPORT}
+mv /var/log/lynis-report.dat ${DATA}
+
+find $LOG_DIR -type f -mtime +400 -delete -print
+
+echo "Lynis audit for ${HOST} on ${DATE}: ${REPORT}" |
+/usr/bin/mail -s "${HOST}: Lynis audit (${DATE})" -r ${FROM} -a ${REPORT} ${TO}

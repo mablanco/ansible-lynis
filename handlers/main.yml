@@ -1,0 +1,8 @@
+---
+# handlers file for mablanco.lynis
+
+- name: deploy lynis.tar
+  unarchive:
+    src: /tmp/lynis-{{ lynis_version }}.tar.gz
+    dest: /opt
+    copy: no

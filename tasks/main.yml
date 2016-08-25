@@ -1,0 +1,62 @@
+---
+# tasks file for mablanco.lynis
+
+- name: create lynis home
+  file:
+    path: "{{ lynis_home }}"
+    mode: 0750
+    owner: root
+    group: root
+    state: directory
+
+- name: install git cli client
+  package: name=git state=latest
+  when: deploy_method == "git"
+
+- name: deploy lynis with git
+  git:
+    repo: "{{ lynis_git_repo }}"
+    clone: yes
+    dest: "{{ lynis_home }}"
+    force: yes
+  when: deploy_method == "git"
+
+- name: deploy lynis with tar
+  get_url:
+    url: "{{ lynis_url }}/{{ lynis_package }}"
+    dest: "{{ lynis_download_dir }}/{{ lynis_package }}"
+    validate_certs: no
+  when: deploy_method == "tar"
+  notify: "deploy lynis.tar"
+
+- name: create lynis etc directory
+  file:
+    path: /etc/lynis
+    mode: 0750
+    owner: root
+    group: root
+    state: directory
+
+- name: install custom profile
+  template:
+    src: lynis.custom.prf.j2
+    dest: /etc/lynis/custom.prf
+    owner: root
+    group: root
+    mode: 0640
+
+- name: create lynis log directory
+  file:
+    path: /var/log/lynis
+    mode: 0750
+    owner: root
+    group: root
+    state: directory
+
+- name: install cron job
+  template:
+    src: lynis.cron.j2
+    dest: /etc/cron.weekly/lynis
+    owner: root
+    group: root
+    mode: 0750
