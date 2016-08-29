@@ -18,6 +18,9 @@ Role Variables
 - **report_from**: sender email address for the weekly audit report. No valid default, you have to fill it in so the cron job doesn't fail.
 - **report_to**: receiver email address for the weekly audit report. No valid default, you have to fill it in so the cron job doesn't fail.
 - **test_to_skip**: Tests to skip in the audit runs. No default, fill it in at your convenience.
+- **cron_hour**: Hour of execution of the cron job. Defaults to *'6'*.
+- **cron_minute**: Minute of execution of the cron job. Defaults to *'30'*.
+- **cron_dow**: Day of week of execution of the cron job. Defaults to *'7'*.
 
 Example Playbook
 ----------------
@@ -53,4 +56,4 @@ GPLv3
 Author Information
 ------------------
 
-Marco Antonio Blanco
+Marco Antonio Blanco <mablanco@correolibre.eu>

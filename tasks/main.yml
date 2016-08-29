@@ -56,7 +56,17 @@
 - name: install cron job
   template:
     src: lynis.cron.j2
-    dest: /etc/cron.weekly/lynis
+    dest: /usr/local/bin/lynis_cron.sh
     owner: root
     group: root
     mode: 0750
+
+- name: Creates weekly backup cronjob
+  cron:
+    name: "Launch Lynis security audit"
+    hour: "{{ cron_hour }}"
+    minute: "{{ cron_minute }}"
+    weekday: "{{ cron_dow }}"
+    cron_file: "lynis"
+    user: "root"
+    job: "/usr/local/bin/lynis_cron.sh"
