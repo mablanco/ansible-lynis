@@ -25,6 +25,7 @@
   get_url:
     url: "{{ lynis_url }}/{{ lynis_package }}"
     dest: "{{ lynis_download_dir }}/{{ lynis_package }}"
+    checksum: "{{ lynis_package_checksum }}"
     validate_certs: no
   when: deploy_method == "tar"
   notify: "deploy lynis.tar"

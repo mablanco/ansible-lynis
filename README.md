@@ -11,6 +11,7 @@ Role Variables
 - **lynis_url**: URL to fetch the tar file from. Defaults to *'https://cisofy.com/files'*
 - **lynis_version**: Version of the tar package to fetch. Defaults to *'2.2.0'*
 - **lynis_package**: Name of the tar file. Defaults to *'lynis-{{ lynis_version }}.tar.gz'*
+- **lynis_package_checksum**: Checksum of the tar package to be downloaded. No valid default, you have to look for it at https://cisofy.com/download/lynis/
 - **lynis_download_dir**: Local directory where the tar file will be downloaded to. Defaults to *'/tmp'*
 - **lynis_home**: Directory where Lynis will be installed. Defaults to *'/opt/lynis'*
 - **lynis_git_repo**: Git repo URL. Defaults to *'https://github.com/CISOfy/lynis'*
