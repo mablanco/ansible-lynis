@@ -22,13 +22,8 @@
   when: deploy_method == "git"
 
 - name: deploy lynis with tar
-  get_url:
-    url: "{{ lynis_url }}/{{ lynis_package }}"
-    dest: "{{ lynis_download_dir }}/{{ lynis_package }}"
-    checksum: "{{ lynis_package_checksum }}"
-    validate_certs: no
+  include: tar.yml
   when: deploy_method == "tar"
-  notify: "deploy lynis.tar"
 
 - name: create lynis etc directory
   file:

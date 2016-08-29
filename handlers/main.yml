@@ -1,8 +1,2 @@
 ---
 # handlers file for mablanco.lynis
-
-- name: deploy lynis.tar
-  unarchive:
-    src: '{{ lynis_download_dir }}/{{ lynis_package }}'
-    dest: '{{ lynis_home }}/..'
-    copy: no
