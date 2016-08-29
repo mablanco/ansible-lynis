@@ -3,6 +3,6 @@
 
 - name: deploy lynis.tar
   unarchive:
-    src: /tmp/lynis-{{ lynis_version }}.tar.gz
-    dest: /opt
+    src: '{{ lynis_download_dir }}/{{ lynis_package }}'
+    dest: '{{ lynis_home }}/..'
     copy: no
