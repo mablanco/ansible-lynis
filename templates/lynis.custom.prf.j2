@@ -1,10 +1,8 @@
-[configuration]
+# Lynis - Custom scan profile
 
-# Profile name, will be used as title/description
-config:profile_name:Custom profile:
-
-# ** Skip one or more specific tests **
-#
-config:skip-test:{{ tests_to_skip }}:
+# Skip a test (one per line)
+{% for item in tests_to_skip %}
+skip-test={{ item }}
+{% endfor %}
 
 #EOF
