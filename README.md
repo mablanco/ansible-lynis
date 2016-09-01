@@ -8,20 +8,20 @@ I recommend using the *'git'* method as it always installs the latest available 
 Role Variables
 --------------
 
-- **lynis_url**: URL to fetch the tar file from. Defaults to *'https://cisofy.com/files'*
-- **lynis_version**: Version of the tar package to fetch. Defaults to *'2.3.3'*
-- **lynis_package**: Name of the tar file. Defaults to *'lynis-{{ lynis_version }}.tar.gz'*
-- **lynis_package_checksum**: Checksum of the tar package to be downloaded. No valid default, you have to look for it at https://cisofy.com/download/lynis/
-- **lynis_download_dir**: Local directory where the tar file will be downloaded to. Defaults to *'/tmp'*
+- **deploy_method**: Deployment method. Defaults to *'tar'*. Accepted values: *'tar'*, *'git'*, *'pkg'*
 - **lynis_home**: Directory where Lynis will be installed. Defaults to *'/opt/lynis'*
+- **lynis_url**: URL to fetch the tar archive from. Defaults to *'https://cisofy.com/files'*
+- **lynis_version**: Version of the tar archive to fetch. Defaults to *'2.3.3'*
+- **lynis_package**: Name of the tar archive. Defaults to *'lynis-{{ lynis_version }}.tar.gz'*
+- **lynis_package_checksum**: Checksum of the tar archive to be downloaded. No valid default, look for it at https://cisofy.com/download/lynis/
+- **lynis_download_dir**: Local directory where the tar archive will be downloaded to. Defaults to *'/tmp'*
 - **lynis_git_repo**: Git repo URL. Defaults to *'https://github.com/CISOfy/lynis'*
-- **deploy_method**: Deployment method. Defaults to *'tar'*
-- **report_from**: sender email address for the weekly audit report. No valid default, you have to fill it in so the cron job doesn't fail.
-- **report_to**: receiver email address for the weekly audit report. No valid default, you have to fill it in so the cron job doesn't fail.
-- **test_to_skip**: Tests to skip in the audit runs. No default, fill it in at your convenience.
 - **cron_hour**: Hour of execution of the cron job. Defaults to *'6'*.
 - **cron_minute**: Minute of execution of the cron job. Defaults to *'30'*.
 - **cron_dow**: Day of week of execution of the cron job. Defaults to *'7'*.
+- **report_from**: Sender email address for the weekly audit report. No valid default, you have to fill it in so the cron job doesn't fail.
+- **report_to**: Receiver email address for the weekly audit report. No valid default, you have to fill it in so the cron job doesn't fail.
+- **tests_to_skip**: Tests to skip in the audit runs. No default, fill it in at your convenience.
 
 Example Playbook
 ----------------

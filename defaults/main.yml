@@ -1,14 +1,23 @@
 ---
 # defaults file for mablanco.lynis
 
+# general vars
+deploy_method: 'tar'
+lynis_home: '/opt/lynis'
+# tar method vars
 lynis_url: 'https://cisofy.com/files'
 lynis_version: '2.3.3'
 lynis_package: 'lynis-{{ lynis_version }}.tar.gz'
 lynis_package_checksum: 'sha256:f012b17b705b2963294163b16293b2c2f8e11f904a7352aec9ba693e48d7a700'
 lynis_download_dir: '/tmp'
-lynis_home: '/opt/lynis'
+# git method vars
 lynis_git_repo: 'https://github.com/CISOfy/lynis'
-deploy_method: 'tar'
+# cron job vars
 cron_hour: '6'
 cron_minute: '30'
 cron_dow: '7'
+# cron script vars
+report_from: ''
+report_to: ''
+# lynis custom profile vars
+tests_to_skip: ''
