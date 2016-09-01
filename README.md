@@ -44,7 +44,7 @@ You can also use the **deploy_method** variable in your inventory as follows:
     [lynis-tar:vars]
     deploy_method=tar
 
-If you want to skip tests that make no sense in your servers, you can assign the "tasks_to_skip" with a list of the tests codes in any of the usual places in Ansible. For example, in the vars/main.yml file:
+If you want to skip tests that make no sense in your servers, you can assign the **tasks_to_skip** variable with a list of the tests codes in any of the usual places in Ansible. For example, in the *'vars/main.yml'* file:
 
     ---
     # vars file for mablanco.lynis
