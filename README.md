@@ -1,7 +1,7 @@
 mablanco.lynis
 ==============
 
-Role to deploy Lynis, an open source security auditing tool, from either its Git repo or the official tar package. It also schedules a weekly audit whose resulting report is sent to a customizable email account.
+Ansible role to deploy Lynis, an open source security auditing tool, from either its Git repo or the official tar package. It also schedules a weekly audit whose resulting report is sent to a customizable email account.
 
 I recommend using the *'git'* method as it always installs the latest available version, while only using the *'tar'* method as a fallback in case the target machine doesn't have a git CLI client available.
 
@@ -43,6 +43,16 @@ You can also use the **deploy_method** variable in your inventory as follows:
 
     [lynis-tar:vars]
     deploy_method=tar
+
+If you want to skip tests that make no sense in your servers, you can assign the "tasks_to_skip" with a list of the tests codes in any of the usual places in Ansible. For example, in the vars/main.yml file:
+
+    ---
+    # vars file for mablanco.lynis
+    
+    tests_to_skip:
+      - SSH-7408
+      - KRNL-6000
+      - HOME-9350
 
 TODO
 ----
