@@ -8,6 +8,7 @@
     owner: root
     group: root
     state: directory
+  when: deploy_method in [ "tar", "git" ]
 
 - name: install git cli client
   package: name=git state=latest
@@ -25,6 +26,10 @@
   include: tar.yml
   when: deploy_method == "tar"
 
+- name: deploy lynis with package
+  include: pkg.yml
+  when: deploy_method == "pkg" and ansible_os_family in [ "Debian", "Ubuntu" ]
+
 - name: create lynis etc directory
   file:
     path: /etc/lynis
@@ -32,6 +37,7 @@
     owner: root
     group: root
     state: directory
+  when: deploy_method in [ "tar", "git" ]
 
 - name: install custom profile
   template:
@@ -40,6 +46,7 @@
     owner: root
     group: root
     mode: 0640
+  when: deploy_method in [ "tar", "git" ]
 
 - name: create lynis log directory
   file:

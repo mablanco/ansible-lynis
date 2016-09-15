@@ -1,14 +1,14 @@
 mablanco.lynis
-==============
+=
 
 Ansible role to deploy Lynis, an open source security auditing tool, from either its Git repo or the official tar package. It also schedules a weekly audit whose resulting report is sent to a customizable email account.
 
 I recommend using the *'git'* method as it always installs the latest available version, while only using the *'tar'* method as a fallback in case the target machine doesn't have a git CLI client available.
 
 Role Variables
---------------
+-
 
-- **deploy_method**: Deployment method. Defaults to *'tar'*. Accepted values: *'tar'*, *'git'*, *'pkg'*
+- **deploy_method**: Deployment method. Defaults to *'tar'*. Accepted values: *'tar'*, *'git'*, *'pkg'*. Only Debian and Ubuntu supported by now, with more distros to come in the near future.
 - **lynis_home**: Directory where Lynis will be installed. Defaults to *'/opt/lynis'*
 - **lynis_url**: URL to fetch the tar archive from. Defaults to *'https://cisofy.com/files'*
 - **lynis_version**: Version of the tar archive to fetch. Defaults to *'2.3.3'*
@@ -24,7 +24,7 @@ Role Variables
 - **tests_to_skip**: Tests to skip in the audit runs. No default, fill it in at your convenience with a list of test codes.
 
 Example Playbook
-----------------
+-
 
 Examples of how to use this role, depending on the deployment method of choice:
 
@@ -35,6 +35,10 @@ Examples of how to use this role, depending on the deployment method of choice:
     - hosts: lynis-git
       roles:
          - { role: mablanco.lynis, deploy_method: git }
+
+    - hosts: lynis-pkg
+      roles:
+         - { role: mablanco.lynis, deploy_method: pkg }
 
 You can also use the **deploy_method** variable in your inventory as follows:
 
@@ -55,16 +59,16 @@ If you want to skip tests that make no sense in your servers, you can assign the
       - HOME-9350
 
 TODO
-----
+-
 
 - Add a new deployment method: installing a distro package from the official repos
 
 License
--------
+-
 
 GPLv3
 
 Author Information
-------------------
+-
 
 Marco Antonio Blanco <mablanco@correolibre.eu>

@@ -11,11 +11,15 @@ DATA="$LOG_DIR/report-data-${HOST}.${DATE}.log"
 FROM="{{ report_from }}"
 TO="{{ report_to }}"
 
+{% if deploy_method == "pkg" %}
+/usr/sbin/lynis audit system --auditor "${AUDITOR}" --cronjob > ${REPORT}
+{% else %}
 cd /opt/lynis
 {% if deploy_method == "git" %}
 git pull
 {% endif %}
 ./lynis audit system --auditor "${AUDITOR}" --cronjob > ${REPORT}
+{% endif %}
 mv /var/log/lynis-report.dat ${DATA}
 
 find $LOG_DIR -type f -mtime +400 -delete -print
