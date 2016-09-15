@@ -30,6 +30,25 @@
   include: pkg.yml
   when: deploy_method == "pkg" and ansible_os_family in [ "Debian", "Ubuntu" ]
 
+- name: create man page directory
+  file:
+    path: /usr/local/share/man/man8/
+    mode: 0755
+    owner: root
+    group: root
+    state: directory
+  when: deploy_method in [ "tar", "git" ]
+
+- name: install man page
+  copy:
+    src: "{{ lynis_home }}/lynis.8"
+    dest: "/usr/local/share/man/man8/"
+    mode: 0644
+    owner: root
+    group: root
+    remote_src: true
+  when: deploy_method in [ "tar", "git" ]
+
 - name: create lynis etc directory
   file:
     path: /etc/lynis
