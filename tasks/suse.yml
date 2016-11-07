@@ -1,0 +1,14 @@
+---
+
+- name: install lynis official repo key
+  rpm_key: key=https://packages.cisofy.com/keys/cisofy-software-rpms-public.key validate_certs=no state=present
+
+- name: add lynis official repo
+  zypper_repository:
+    name: lynis
+    description: CISOfy Lynis repository
+    repo: 'https://packages.cisofy.com/community/lynis/rpm/'
+    state: present
+
+- name: install lynis package
+  zypper: name=lynis state=latest

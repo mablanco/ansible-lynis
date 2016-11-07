@@ -8,7 +8,7 @@ I recommend using the *'git'* method as it always installs the latest available 
 Role Variables
 -
 
-- **deploy_method**: Deployment method. Defaults to *'tar'*. Accepted values: *'tar'*, *'git'*, *'pkg'*. Only Debian and Ubuntu supported by now, with more distros to come in the near future.
+- **deploy_method**: Deployment method. Defaults to *'tar'*. Accepted values: *'tar'*, *'git'*, *'pkg'*. Distros supported by now: Debian, Ubuntu, RHEL, Fedora, CentOS, openSuSE and SLES.
 - **lynis_home**: Directory where Lynis will be installed. Defaults to *'/opt/lynis'*
 - **lynis_url**: URL to fetch the tar archive from. Defaults to *'https://cisofy.com/files'*
 - **lynis_version**: Version of the tar archive to fetch. Defaults to *'2.3.3'*
@@ -57,11 +57,6 @@ If you want to skip tests that make no sense in your servers, you can assign the
       - SSH-7408
       - KRNL-6000
       - HOME-9350
-
-TODO
--
-
-- Add a new deployment method: installing a distro package from the official repos
 
 License
 -

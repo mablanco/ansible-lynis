@@ -1,0 +1,21 @@
+---
+
+- name: update prerequisites
+  yum: name={{ item }} state=latest
+  with_items:
+  - ca-certificates
+  - curl
+  - nss
+  - openssl
+
+- name: add lynis official repo
+  yum_repository:
+    name: lynis
+    description: CISOfy Software - Lynis package
+    baseurl: https://packages.cisofy.com/community/lynis/rpm/
+    enabled: yes
+    gpgkey: https://packages.cisofy.com/keys/cisofy-software-rpms-public.key
+    gpgcheck: yes
+
+- name: install lynis package
+  yum: name=lynis state=latest update_cache=yes 

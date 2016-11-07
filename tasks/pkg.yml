@@ -1,20 +1,13 @@
 ---
 
-- name: install support for APT thru HTTPS
-  apt: name=apt-transport-https state=latest
+- name: deploy Debian lynis package
+  include: debian.yml
+  when: ansible_os_family == 'Debian' and ansible_lsb.codename in [ "wheezy", "jessie", "trusty", "xenial" ]
 
-- name: install lynis official repo key
-  apt_key: keyserver=keyserver.ubuntu.com id=C80E383C3DE9F082E01391A0366C67DE91CA5D5F
-  when: ansible_lsb.codename in [ "wheezy", "jessie", "trusty", "xenial" ]
+- name: deploy RedHat lynis package
+  include: redhat.yml
+  when: ansible_os_family == "RedHat" and ansible_distribution_major_version|int >= 5
 
-- name: add lynis official repo
-  copy:
-    content: "deb https://packages.cisofy.com/community/lynis/deb/ {{ ansible_lsb.codename }} main"
-    dest: "/etc/apt/sources.list.d/cisofy-lynis.list"
-    owner: root
-    group: root
-    mode: 0644
-  when: ansible_lsb.codename in [ "wheezy", "jessie", "trusty", "xenial" ]
-
-- name: install lynis package
-  apt: name=lynis state=latest
+- name: deploy Suse lynis package
+  include: suse.yml
+  when: ansible_os_family == "Suse" and ansible_distribution_major_version|int >= 11

@@ -26,9 +26,9 @@
   include: tar.yml
   when: deploy_method == "tar"
 
-- name: deploy lynis with package
+- name: deploy lynis with distro package
   include: pkg.yml
-  when: deploy_method == "pkg" and ansible_os_family in [ "Debian", "Ubuntu" ]
+  when: deploy_method == "pkg"
 
 - name: create man page directory
   file:
