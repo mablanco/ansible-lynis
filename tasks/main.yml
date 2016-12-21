@@ -78,7 +78,7 @@
 - name: install cron job
   template:
     src: lynis.cron.j2
-    dest: /usr/local/bin/lynis_cron.sh
+    dest: '/usr/local/bin/lynis_cron.sh >/dev/null 2>&1'
     owner: root
     group: root
     mode: 0750
