@@ -78,7 +78,7 @@
 - name: install cron job
   template:
     src: lynis.cron.j2
-    dest: '/usr/local/bin/lynis_cron.sh >/dev/null 2>&1'
+    dest: /usr/local/bin/lynis_cron.sh
     owner: root
     group: root
     mode: 0750
@@ -91,4 +91,4 @@
     weekday: "{{ cron_dow }}"
     cron_file: "lynis"
     user: "root"
-    job: "/usr/local/bin/lynis_cron.sh"
+    job: "/usr/local/bin/lynis_cron.sh 2>&1 | logger"
