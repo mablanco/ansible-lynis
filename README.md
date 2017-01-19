@@ -1,17 +1,17 @@
 mablanco.lynis
 =
 
-Ansible role to deploy Lynis, an open source security auditing tool, from either its Git repo or the official tar package. It also schedules a weekly audit whose resulting report is sent to a customizable email account.
+Ansible role to deploy Lynis, an open source security auditing tool, from either its Git repo, the official tar archive or the official Linux packages. It also schedules a weekly audit whose resulting report is sent to a customizable email account.
 
-I recommend using the *'git'* method as it always installs the latest available version, while only using the *'tar'* method as a fallback in case the target machine doesn't have a git CLI client available.
+I recommend using the *'git'* method as it always installs the latest available version, while only using the *'tar'* method as a fallback in case the target machine doesn't have a git CLI client available. If you prefer the best integration with your Linux distribution, then you can choose the *'pkg'* method.
 
 Role Variables
 -
 
-- **deploy_method**: Deployment method. Defaults to *'tar'*. Accepted values: *'tar'*, *'git'*, *'pkg'*. Distros supported by now: Debian, Ubuntu, RHEL, Fedora, CentOS, openSuSE and SLES.
+- **deploy_method**: Deployment method. Defaults to *'tar'*. Accepted values: *'tar'*, *'git'*, *'pkg'*. Currently supported Linux distros: Debian, Ubuntu, RHEL, Fedora, CentOS, openSuSE and SLES.
 - **lynis_home**: Directory where Lynis will be installed. Defaults to *'/opt/lynis'*
 - **lynis_url**: URL to fetch the tar archive from. Defaults to *'https://cisofy.com/files'*
-- **lynis_version**: Version of the tar archive to fetch. Defaults to *'2.3.3'*
+- **lynis_version**: Version of the tar archive to fetch. Defaults to *'2.4.0'*
 - **lynis_package**: Name of the tar archive. Defaults to *'lynis-{{ lynis_version }}.tar.gz'*
 - **lynis_package_checksum**: Checksum of the tar archive to be downloaded. No valid default, look for it at https://cisofy.com/download/lynis/
 - **lynis_download_dir**: Local directory where the tar archive will be downloaded to. Defaults to *'/tmp'*
