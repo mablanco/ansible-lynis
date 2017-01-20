@@ -1,7 +1,7 @@
 ---
 
 - name: install support for APT thru HTTPS
-  apt: name=apt-transport-https state=latest
+  apt: name=apt-transport-https state=present
 
 - name: install lynis official repo key
   apt_key: keyserver=keyserver.ubuntu.com id=C80E383C3DE9F082E01391A0366C67DE91CA5D5F
@@ -15,4 +15,4 @@
     mode: 0644
 
 - name: install lynis package
-  apt: name=lynis state=latest
+  apt: name=lynis state=latest update_cache=yes
