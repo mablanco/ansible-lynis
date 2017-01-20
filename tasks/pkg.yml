@@ -6,7 +6,11 @@
 
 - name: deploy RedHat lynis package
   include: redhat.yml
-  when: ansible_os_family == "RedHat" and ansible_distribution_major_version|int >= 5
+  when: ansible_os_family == "RedHat" and ansible_distribution_major_version|int >= 5 and ansible_distribution != "Fedora"
+  
+- name: deploy Fedora lynis package
+  include: fedora.yml
+  when: ansible_distribution == "Fedora"
 
 - name: deploy Suse lynis package
   include: suse.yml
