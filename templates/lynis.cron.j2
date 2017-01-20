@@ -12,7 +12,12 @@ FROM="{{ report_from }}"
 TO="{{ report_to }}"
 
 {% if deploy_method == "pkg" %}
-/usr/sbin/lynis audit system --auditor "${AUDITOR}" --cronjob > ${REPORT}
+{% if ansible_os_family == 'Debian' %}
+LYNIS_PATH="/usr/sbin/lynis"
+{% else %}
+LYNIS_PATH="/usr/bin/lynis"
+{% endif %}
+$LYNIS_PATH audit system --auditor "${AUDITOR}" --cronjob > ${REPORT}
 {% else %}
 cd /opt/lynis
 {% if deploy_method == "git" %}
