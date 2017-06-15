@@ -8,11 +8,11 @@
     owner: root
     group: root
     state: directory
-  when: deploy_method in [ "tar", "git" ]
+  when: lynis_deploy_method in [ "tar", "git" ]
 
 - name: install git cli client
   package: name=git state=latest
-  when: deploy_method == "git"
+  when: lynis_deploy_method == "git"
 
 - name: deploy lynis with git
   git:
@@ -20,15 +20,15 @@
     clone: yes
     dest: "{{ lynis_home }}"
     force: yes
-  when: deploy_method == "git"
+  when: lynis_deploy_method == "git"
 
 - name: deploy lynis with tar
   include: tar.yml
-  when: deploy_method == "tar"
+  when: lynis_deploy_method == "tar"
 
 - name: deploy lynis with distro package
   include: pkg.yml
-  when: deploy_method == "pkg"
+  when: lynis_deploy_method == "pkg"
 
 - name: create man page directory
   file:
@@ -37,7 +37,7 @@
     owner: root
     group: root
     state: directory
-  when: deploy_method in [ "tar", "git" ]
+  when: lynis_deploy_method in [ "tar", "git" ]
 
 - name: install man page
   copy:
@@ -47,7 +47,7 @@
     owner: root
     group: root
     remote_src: true
-  when: deploy_method in [ "tar", "git" ]
+  when: lynis_deploy_method in [ "tar", "git" ]
 
 - name: create lynis etc directory
   file:
@@ -56,7 +56,7 @@
     owner: root
     group: root
     state: directory
-  when: deploy_method in [ "tar", "git" ]
+  when: lynis_deploy_method in [ "tar", "git" ]
 
 - name: install custom profile
   template:
@@ -65,7 +65,7 @@
     owner: root
     group: root
     mode: 0640
-  when: deploy_method in [ "tar", "git" ]
+  when: lynis_deploy_method in [ "tar", "git" ]
 
 - name: create lynis log directory
   file:
@@ -86,9 +86,9 @@
 - name: Creates weekly backup cronjob
   cron:
     name: "Launch Lynis security audit"
-    hour: "{{ cron_hour }}"
-    minute: "{{ cron_minute }}"
-    weekday: "{{ cron_dow }}"
+    hour: "{{ lynis_cron_hour }}"
+    minute: "{{ lynis_cron_minute }}"
+    weekday: "{{ lynis_cron_dow }}"
     cron_file: "lynis"
     user: "root"
     job: "/usr/local/bin/lynis_cron.sh 2>&1 | logger"

@@ -8,10 +8,10 @@ LOG_DIR="/var/log/lynis"
 REPORT="$LOG_DIR/report-${HOST}.${DATE}.log"
 DATA="$LOG_DIR/report-data-${HOST}.${DATE}.log"
 
-FROM="{{ report_from }}"
-TO="{{ report_to }}"
+FROM="{{ lynis_report_from }}"
+TO="{{ lynis_report_to }}"
 
-{% if deploy_method == "pkg" %}
+{% if lynis_deploy_method == "pkg" %}
 {% if ansible_os_family == 'Debian' %}
 LYNIS_PATH="/usr/sbin/lynis"
 {% else %}
@@ -20,7 +20,7 @@ LYNIS_PATH="/usr/bin/lynis"
 $LYNIS_PATH audit system --auditor "${AUDITOR}" --cronjob > ${REPORT}
 {% else %}
 cd /opt/lynis
-{% if deploy_method == "git" %}
+{% if lynis_deploy_method == "git" %}
 git pull
 {% endif %}
 ./lynis audit system --auditor "${AUDITOR}" --cronjob > ${REPORT}
