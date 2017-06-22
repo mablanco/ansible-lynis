@@ -8,7 +8,7 @@ I recommend using the *'git'* method as it always installs the latest available 
 Role Variables
 -
 
-- **deploy_method**: Deployment method. Defaults to *'tar'*. Accepted values: *'tar'*, *'git'*, *'pkg'*. Currently supported Linux distros: Debian, Ubuntu, RHEL, Fedora, CentOS, openSuSE and SLES.
+- **lynis_deploy_method**: Deployment method. Defaults to *'tar'*. Accepted values: *'tar'*, *'git'*, *'pkg'*. Currently supported Linux distros: Debian, Ubuntu, RHEL, Fedora, CentOS, openSuSE and SLES.
 - **lynis_home**: Directory where Lynis will be installed. Defaults to *'/opt/lynis'*
 - **lynis_url**: URL to fetch the tar archive from. Defaults to *'https://cisofy.com/files'*
 - **lynis_version**: Version of the tar archive to fetch. Defaults to *'2.4.0'*
@@ -16,12 +16,12 @@ Role Variables
 - **lynis_package_checksum**: Checksum of the tar archive to be downloaded. No valid default, look for it at https://cisofy.com/download/lynis/
 - **lynis_download_dir**: Local directory where the tar archive will be downloaded to. Defaults to *'/tmp'*
 - **lynis_git_repo**: Git repo URL. Defaults to *'https://github.com/CISOfy/lynis'*
-- **cron_hour**: Hour of execution of the cron job. Defaults to *'6'*.
-- **cron_minute**: Minute of execution of the cron job. Defaults to *'30'*.
-- **cron_dow**: Day of week of execution of the cron job. Defaults to *'7'*.
-- **report_from**: Sender email address for the weekly audit report. No valid default, you have to fill it in so the cron job doesn't fail.
-- **report_to**: Receiver email address for the weekly audit report. No valid default, you have to fill it in so the cron job doesn't fail.
-- **tests_to_skip**: Tests to skip in the audit runs. No default, fill it in at your convenience with a list of test codes.
+- **lynis_cron_hour**: Hour of execution of the cron job. Defaults to *'6'*.
+- **lynis_cron_minute**: Minute of execution of the cron job. Defaults to *'30'*.
+- **lynis_cron_dow**: Day of week of execution of the cron job. Defaults to *'7'*.
+- **lynis_report_from**: Sender email address for the weekly audit report. No valid default, you have to fill it in so the cron job doesn't fail.
+- **lynis_report_to**: Receiver email address for the weekly audit report. No valid default, you have to fill it in so the cron job doesn't fail.
+- **lynis_tests_to_skip**: Tests to skip in the audit runs. No default, fill it in at your convenience with a list of test codes.
 
 Example Playbook
 -
@@ -30,30 +30,30 @@ Examples of how to use this role, depending on the deployment method of choice:
 
     - hosts: lynis-tar
       roles:
-         - { role: mablanco.lynis, deploy_method: tar }
+         - { role: mablanco.lynis, lynis_deploy_method: tar }
 
     - hosts: lynis-git
       roles:
-         - { role: mablanco.lynis, deploy_method: git }
+         - { role: mablanco.lynis, lynis_deploy_method: git }
 
     - hosts: lynis-pkg
       roles:
-         - { role: mablanco.lynis, deploy_method: pkg }
+         - { role: mablanco.lynis, lynis_deploy_method: pkg }
 
-You can also use the **deploy_method** variable in your inventory as follows:
+You can also use the **lynis_deploy_method** variable in your inventory as follows:
 
     [lynis-tar]
     server01
 
     [lynis-tar:vars]
-    deploy_method=tar
+    lynis_deploy_method=tar
 
-If you want to skip tests that make no sense in your servers, you can assign the **tasks_to_skip** variable with a list of the tests codes in any of the usual places in Ansible. For example, in the *'vars/main.yml'* file:
+If you want to skip tests that make no sense in your servers, you can assign the **lynis_tests_to_skip** variable with a list of the tests codes in any of the usual places in Ansible. For example, in the *'vars/main.yml'* file:
 
     ---
     # vars file for mablanco.lynis
-    
-    tests_to_skip:
+
+    lynis_tests_to_skip:
       - SSH-7408
       - KRNL-6000
       - HOME-9350

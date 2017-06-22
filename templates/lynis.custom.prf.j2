@@ -1,7 +1,7 @@
 # Lynis - Custom scan profile
 
 # Skip a test (one per line)
-{% for item in tests_to_skip %}
+{% for item in lynis_tests_to_skip %}
 skip-test={{ item }}
 {% endfor %}
 
