@@ -1,12 +1,10 @@
-mablanco.lynis
-=
+# mablanco.lynis
 
 Ansible role to deploy Lynis, an open source security auditing tool, from either its Git repo, the official tar archive or the official Linux packages. It also schedules a weekly audit whose resulting report is sent to a customizable email account.
 
 I recommend using the *'git'* method as it always installs the latest available version, while only using the *'tar'* method as a fallback in case the target machine doesn't have a git CLI client available. If you prefer the best integration with your Linux distribution, then you can choose the *'pkg'* method.
 
-Role Variables
--
+## Role Variables
 
 - **lynis_deploy_method**: Deployment method. Defaults to *'tar'*. Accepted values: *'tar'*, *'git'*, *'pkg'*. Currently supported Linux distros: Debian, Ubuntu, RHEL, Fedora, CentOS, openSuSE and SLES.
 - **lynis_home**: Directory where Lynis will be installed. Defaults to *'/opt/lynis'*
@@ -23,8 +21,7 @@ Role Variables
 - **lynis_report_to**: Receiver email address for the weekly audit report. No valid default, you have to fill it in so the cron job doesn't fail.
 - **lynis_tests_to_skip**: Tests to skip in the audit runs. No default, fill it in at your convenience with a list of test codes.
 
-Example Playbook
--
+## Example Playbook
 
 Examples of how to use this role, depending on the deployment method of choice:
 
@@ -58,12 +55,6 @@ If you want to skip tests that make no sense in your servers, you can assign the
       - KRNL-6000
       - HOME-9350
 
-License
--
+## License
 
 GPLv3
-
-Author Information
--
-
-Marco Antonio Blanco <mablanco@correolibre.eu>
