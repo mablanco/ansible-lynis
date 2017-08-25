@@ -9,7 +9,7 @@ I recommend using the *'git'* method as it always installs the latest available 
 - **lynis_deploy_method**: Deployment method. Defaults to *'tar'*. Accepted values: *'tar'*, *'git'*, *'pkg'*. Currently supported Linux distros: Debian, Ubuntu, RHEL, Fedora, CentOS, openSuSE and SLES.
 - **lynis_home**: Directory where Lynis will be installed. Defaults to *'/opt/lynis'*
 - **lynis_url**: URL to fetch the tar archive from. Defaults to *'https://cisofy.com/files'*
-- **lynis_version**: Version of the tar archive to fetch. Defaults to *'2.4.0'*
+- **lynis_version**: Version of the tar archive to fetch. Defaults to *'2.5.3'*
 - **lynis_package**: Name of the tar archive. Defaults to *'lynis-{{ lynis_version }}.tar.gz'*
 - **lynis_package_checksum**: Checksum of the tar archive to be downloaded. No valid default, look for it at https://cisofy.com/download/lynis/
 - **lynis_download_dir**: Local directory where the tar archive will be downloaded to. Defaults to *'/tmp'*
