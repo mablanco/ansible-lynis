@@ -17,8 +17,8 @@ I recommend using the *'git'* method as it always installs the latest available 
 - **lynis_cron_hour**: Hour of execution of the cron job. Defaults to *'6'*.
 - **lynis_cron_minute**: Minute of execution of the cron job. Defaults to *'30'*.
 - **lynis_cron_dow**: Day of week of execution of the cron job. Defaults to *'7'*.
-- **lynis_report_from**: Sender email address for the weekly audit report. No valid default, you have to fill it in so the cron job doesn't fail.
-- **lynis_report_to**: Receiver email address for the weekly audit report. No valid default, you have to fill it in so the cron job doesn't fail.
+- **lynis_report_from**: Sender email address for the weekly audit report. No valid default.
+- **lynis_report_to**: Receiver email address for the weekly audit report. No valid default.
 - **lynis_tests_to_skip**: Tests to skip in the audit runs. No default, fill it in at your convenience with a list of test codes.
 
 ## Example Playbook
