@@ -1,19 +1,19 @@
 ---
 # tasks file for mablanco.lynis
 
-- name: lynis_report_from should be defined
+- name: Lynis | lynis_report_from should be defined
   assert:
     that:
     - lynis_report_from is defined and lynis_report_from != ''
     msg: "Set the value of 'lynis_report_from' in either the inventory file or the playbook invoking this role."
 
-- name: lynis_report_to should be defined
+- name: Lynis | lynis_report_to should be defined
   assert:
     that:
     - lynis_report_to is defined and lynis_report_to != ''
     msg: "Set the value of 'lynis_report_to' in either the inventory file or the playbook invoking this role."
 
-- name: create lynis home
+- name: Lynis | create lynis home
   file:
     path: "{{ lynis_home }}"
     mode: 0750
@@ -22,11 +22,11 @@
     state: directory
   when: lynis_deploy_method in [ "tar", "git" ]
 
-- name: install git cli client
+- name: Lynis | install git cli client
   package: name=git state=latest
   when: lynis_deploy_method == "git"
 
-- name: deploy lynis with git
+- name: Lynis | deploy lynis with git
   git:
     repo: "{{ lynis_git_repo }}"
     clone: yes
@@ -34,15 +34,15 @@
     force: yes
   when: lynis_deploy_method == "git"
 
-- name: deploy lynis with tar
+- name: Lynis | deploy lynis with tar
   include: tar.yml
   when: lynis_deploy_method == "tar"
 
-- name: deploy lynis with distro package
+- name: Lynis | deploy lynis with distro package
   include: pkg.yml
   when: lynis_deploy_method == "pkg"
 
-- name: create man page directory
+- name: Lynis | create man page directory
   file:
     path: /usr/local/share/man/man8/
     mode: 0755
@@ -51,7 +51,7 @@
     state: directory
   when: lynis_deploy_method in [ "tar", "git" ]
 
-- name: install man page
+- name: Lynis | install man page
   copy:
     src: "{{ lynis_home }}/lynis.8"
     dest: "/usr/local/share/man/man8/"
@@ -61,7 +61,7 @@
     remote_src: true
   when: lynis_deploy_method in [ "tar", "git" ]
 
-- name: create lynis etc directory
+- name: Lynis | create lynis etc directory
   file:
     path: /etc/lynis
     mode: 0750
@@ -70,7 +70,7 @@
     state: directory
   when: lynis_deploy_method in [ "tar", "git" ]
 
-- name: install custom profile
+- name: Lynis | install custom profile
   template:
     src: lynis.custom.prf.j2
     dest: /etc/lynis/custom.prf
@@ -79,7 +79,7 @@
     mode: 0640
   when: lynis_deploy_method in [ "tar", "git" ]
 
-- name: create lynis log directory
+- name: Lynis | create lynis log directory
   file:
     path: /var/log/lynis
     mode: 0750
@@ -87,7 +87,7 @@
     group: root
     state: directory
 
-- name: install cron job
+- name: Lynis | install cron job
   template:
     src: lynis.cron.j2
     dest: /usr/local/bin/lynis_cron.sh
@@ -95,7 +95,7 @@
     group: root
     mode: 0750
 
-- name: Creates weekly backup cronjob
+- name: Lynis | schedule weekly audit
   cron:
     name: "Launch Lynis security audit"
     hour: "{{ lynis_cron_hour }}"

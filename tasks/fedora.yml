@@ -1,5 +1,5 @@
 ---
-- name: update prerequisites
+- name: Lynis | Fedora | update prerequisites
   dnf: name={{ item }} state=latest
   with_items:
   - ca-certificates
@@ -7,7 +7,7 @@
   - nss
   - openssl
 
-- name: add lynis official repo
+- name: Lynis | Fedora | add lynis official repo
   yum_repository:
     name: lynis
     description: CISOfy Software - Lynis package
@@ -16,5 +16,5 @@
     gpgkey: https://packages.cisofy.com/keys/cisofy-software-rpms-public.key
     gpgcheck: yes
 
-- name: install lynis package
+- name: Lynis | Fedora | install lynis package
   dnf: name=lynis state=latest

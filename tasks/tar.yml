@@ -1,19 +1,19 @@
 ---
 
-- name: deploy lynis with tar (download)
+- name: Lynis | tar | download archive
   get_url:
     url: "{{ lynis_url }}/{{ lynis_package }}"
     dest: "{{ lynis_download_dir }}/{{ lynis_package }}"
     checksum: "{{ lynis_package_checksum }}"
     validate_certs: no
 
-- name: deploy lynis with tar (extract)
+- name: Lynis | tar | extract archive
   unarchive:
     src: '{{ lynis_download_dir }}/{{ lynis_package }}'
     dest: '{{ lynis_home }}/..'
     copy: no
 
-- name: deploy lynis with tar (delete package)
+- name: Lynis | tar | delete downloaded archive
   file:
     path: '{{ lynis_download_dir }}/{{ lynis_package }}'
     state: absent
