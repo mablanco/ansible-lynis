@@ -1,19 +1,10 @@
 ---
 
-- name: Lynis | tar | download archive
-  get_url:
-    url: "{{ lynis_url }}/{{ lynis_package }}"
-    dest: "{{ lynis_download_dir }}/{{ lynis_package }}"
-    checksum: "{{ lynis_package_checksum }}"
-    validate_certs: no
-
 - name: Lynis | tar | extract archive
   unarchive:
-    src: '{{ lynis_download_dir }}/{{ lynis_package }}'
-    dest: '{{ lynis_home }}/..'
-    copy: no
-
-- name: Lynis | tar | delete downloaded archive
-  file:
-    path: '{{ lynis_download_dir }}/{{ lynis_package }}'
-    state: absent
+    src: "{{ lynis_url }}/{{ lynis_package }}"
+    dest: "{{ lynis_home }}"
+    remote_src: yes
+    owner: root
+    group: root
+    extra_opts: [--strip-components=1]

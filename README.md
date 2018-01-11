@@ -11,8 +11,6 @@ I recommend using the *'git'* method as it always installs the latest available 
 - **lynis_url**: URL to fetch the tar archive from. Defaults to *'https://cisofy.com/files'*
 - **lynis_version**: Version of the tar archive to fetch. Currently defaults to *'2.5.8'*
 - **lynis_package**: Name of the tar archive. Defaults to *'lynis-{{ lynis_version }}.tar.gz'*
-- **lynis_package_checksum**: Checksum of the tar archive to be downloaded. No valid default, look for it at https://cisofy.com/download/lynis/
-- **lynis_download_dir**: Local directory where the tar archive will be downloaded to. Defaults to *'/tmp'*
 - **lynis_git_repo**: Git repo URL. Defaults to *'https://github.com/CISOfy/lynis'*
 - **lynis_cron_hour**: Hour of execution of the cron job. Defaults to *'6'*.
 - **lynis_cron_minute**: Minute of execution of the cron job. Defaults to *'30'*.
