@@ -17,5 +17,6 @@ lynis_cron_dow: '7'
 # cron script vars
 lynis_report_from: ''
 lynis_report_to: ''
+lynis_log_expire: '90'
 # lynis custom profile vars
 lynis_tests_to_skip: ''

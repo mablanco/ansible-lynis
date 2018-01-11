@@ -7,6 +7,7 @@ HOST=$(hostname)
 LOG_DIR="/var/log/lynis"
 REPORT="$LOG_DIR/report-${HOST}.${DATE}.log"
 DATA="$LOG_DIR/report-data-${HOST}.${DATE}.log"
+LOG_EXPIRE={{ lynis_log_expire }}
 
 FROM="{{ lynis_report_from }}"
 TO="{{ lynis_report_to }}"
@@ -27,7 +28,7 @@ git pull
 {% endif %}
 mv /var/log/lynis-report.dat ${DATA}
 
-find $LOG_DIR -type f -mtime +400 -delete -print
+find $LOG_DIR -type f -mtime +$LOG_EXPIRE -delete -print
 
 echo "Lynis audit for ${HOST} on ${DATE}: ${REPORT}" |
 /usr/bin/mail -s "${HOST}: Lynis audit (${DATE})" -r ${FROM} -a ${REPORT} ${TO}
