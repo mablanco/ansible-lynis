@@ -5,7 +5,7 @@
 lynis_deploy_method: 'tar'
 lynis_home: '/opt/lynis'
 # tar method vars
-lynis_url: 'https://cisofy.com/files'
+lynis_url: 'https://downloads.cisofy.com/lynis'
 lynis_version: '2.6.6'
 lynis_package: 'lynis-{{ lynis_version }}.tar.gz'
 # git method vars
