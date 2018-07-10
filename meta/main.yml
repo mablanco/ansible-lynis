@@ -1,7 +1,7 @@
 galaxy_info:
   author: Marco Antonio Blanco
   description: Lynis security audit tool deployment
-  license: license GPLv3
+  license: GPLv3
   min_ansible_version: 2.1
   platforms:
   - name: GenericUNIX
