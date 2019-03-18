@@ -77,7 +77,7 @@
     owner: root
     group: root
     mode: 0640
-  when: lynis_deploy_method in [ "tar", "git" ]
+  when: lynis_deploy_method in [ "tar", "git", "pkg" ]
 
 - name: Lynis | create lynis log directory
   file:
