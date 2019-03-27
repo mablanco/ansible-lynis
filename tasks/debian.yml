@@ -15,4 +15,4 @@
     mode: 0644
 
 - name: Lynis | Debian | install lynis package
-  apt: name=lynis state=latest update_cache=yes
+  apt: name=lynis state=present update_cache=yes

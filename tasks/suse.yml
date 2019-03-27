@@ -11,4 +11,4 @@
     state: present
 
 - name: Lynis | SuSE | install lynis package
-  zypper: name=lynis state=latest
+  zypper: name=lynis state=present

@@ -1,6 +1,6 @@
 ---
 - name: Lynis | Fedora | update prerequisites
-  dnf: name={{ item }} state=latest
+  dnf: name={{ item }} state=present
   with_items:
   - ca-certificates
   - curl
@@ -17,4 +17,4 @@
     gpgcheck: yes
 
 - name: Lynis | Fedora | install lynis package
-  dnf: name=lynis state=latest
+  dnf: name=lynis state=present
