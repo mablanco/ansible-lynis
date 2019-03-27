@@ -9,7 +9,7 @@ I recommend using the _'git'_ method as it always installs the latest available 
 - **lynis_deploy_method**: Deployment method. Defaults to _'tar'_. Accepted values: _'tar'_, _'git'_, _'pkg'_. Currently supported Linux distros: Debian, Ubuntu, RHEL, Fedora, CentOS, openSuSE and SLES.
 - **lynis_home**: Directory where Lynis will be installed. Defaults to _'/opt/lynis'_
 - **lynis_url**: URL to fetch the tar archive from. Defaults to _'<https://cisofy.com/files>'_
-- **lynis_version**: Version of the tar archive to fetch. Currently defaults to _'2.5.8'_
+- **lynis_version**: Version of the tar archive to fetch. Currently defaults to _'2.7.3'_
 - **lynis_package**: Name of the tar archive. Defaults to _'lynis-{{ lynis_version }}.tar.gz'_
 - **lynis_git_repo**: Git repo URL. Defaults to _'<https://github.com/CISOfy/lynis>'_
 - **lynis_cron_hour**: Hour of execution of the cron job. Defaults to _'6'_.
