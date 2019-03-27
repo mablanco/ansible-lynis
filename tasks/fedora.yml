@@ -1,7 +1,7 @@
 ---
 - name: Lynis | Fedora | update prerequisites
   dnf:
-    name: {{ item }}
+    name: "{{ item }}"
     state: present
   with_items:
   - ca-certificates
