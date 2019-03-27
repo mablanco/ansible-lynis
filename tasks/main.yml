@@ -23,7 +23,9 @@
   when: lynis_deploy_method in [ "tar", "git" ]
 
 - name: Lynis | install git cli client
-  package: name=git state=present
+  package:
+    name: git
+    state: present
   when: lynis_deploy_method == "git"
 
 - name: Lynis | deploy lynis with git

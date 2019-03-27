@@ -1,7 +1,10 @@
 ---
 
 - name: Lynis | SuSE | install lynis official repo key
-  rpm_key: key=https://packages.cisofy.com/keys/cisofy-software-rpms-public.key validate_certs=no state=present
+  rpm_key:
+    key: https://packages.cisofy.com/keys/cisofy-software-rpms-public.key
+    validate_certs: no
+    state: present
 
 - name: Lynis | SuSE | add lynis official repo
   zypper_repository:
@@ -11,4 +14,6 @@
     state: present
 
 - name: Lynis | SuSE | install lynis package
-  zypper: name=lynis state=present
+  zypper:
+    name: lynis
+    state: present

@@ -1,10 +1,14 @@
 ---
 
 - name: Lynis | Debian | install support for APT thru HTTPS
-  apt: name=apt-transport-https state=present
+  apt:
+    name: apt-transport-https
+    state: present
 
 - name: Lynis | Debian | install lynis official repo key
-  apt_key: keyserver=keyserver.ubuntu.com id=C80E383C3DE9F082E01391A0366C67DE91CA5D5F
+  apt_key:
+    keyserver: keyserver.ubuntu.com
+    id: C80E383C3DE9F082E01391A0366C67DE91CA5D5F
 
 - name: Lynis | Debian | add lynis official repo
   copy:
@@ -15,4 +19,7 @@
     mode: 0644
 
 - name: Lynis | Debian | install lynis package
-  apt: name=lynis state=present update_cache=yes
+  apt:
+    name: lynis
+    state: present
+    update_cache: yes
