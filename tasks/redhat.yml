@@ -2,13 +2,12 @@
 
 - name: Lynis | RedHat | update prerequisites
   yum:
-    name: "{{ item }}"
+    name:
+    - ca-certificates
+    - curl
+    - nss
+    - openssl
     state: present
-  with_items:
-  - ca-certificates
-  - curl
-  - nss
-  - openssl
 
 - name: Lynis | RedHat | add lynis official repo
   yum_repository:
