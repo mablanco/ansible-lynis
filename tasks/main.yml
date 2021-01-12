@@ -4,13 +4,13 @@
 - name: Lynis | lynis_report_from should be defined
   assert:
     that:
-    - lynis_report_from is defined and lynis_report_from != ''
+    - lynis_report_from is defined and lynis_report_from | length > 0
     msg: "Set the value of 'lynis_report_from' in either the inventory file or the playbook invoking this role."
 
 - name: Lynis | lynis_report_to should be defined
   assert:
     that:
-    - lynis_report_to is defined and lynis_report_to != ''
+    - lynis_report_to is defined and lynis_report_to | length > 0
     msg: "Set the value of 'lynis_report_to' in either the inventory file or the playbook invoking this role."
 
 - name: Lynis | create lynis home
