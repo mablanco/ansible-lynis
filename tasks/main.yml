@@ -34,7 +34,7 @@
     clone: yes
     dest: "{{ lynis_home }}"
     force: yes
-    version: "HEAD"
+    version: "master"
   when: lynis_deploy_method == "git"
 
 - name: Lynis | deploy lynis with tar
