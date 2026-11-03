@@ -27,10 +27,17 @@
 - name: Lynis | Install Lynis
   ansible.builtin.include_tasks: "install-{{ lynis_deploy_method }}.yml"
 
+# On other platforms the role expects a cron daemon to be installed already
 - name: Lynis | Install cron
   ansible.builtin.package:
-    name: "{{ 'cronie' if ansible_facts['os_family'] == 'RedHat' else 'cron' }}"
+    name: "{{ lynis_cron_packages[ansible_facts['os_family']] }}"
     state: present
+  when: ansible_facts['os_family'] in lynis_cron_packages
+  vars:
+    lynis_cron_packages:
+      Debian: cron
+      RedHat: cronie
+      Suse: cron
 
 - name: Lynis | Create the configuration directory
   ansible.builtin.file:

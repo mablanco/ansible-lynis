@@ -8,6 +8,8 @@ Ansible role to deploy [Lynis](https://cisofy.com/lynis/), an open source securi
 
 Debian 12 and 13, Ubuntu 24.04 and 26.04, EL 9 and 10, and openSUSE Leap 16.0, all tested in CI with every installation method.
 
+The `tar` and `git` methods may work on other Linux distributions, but they are not tested there and the role does not install cron on them.
+
 On openSUSE, the role needs the `community.general` collection (`ansible-galaxy collection install community.general`).
 
 The hosts need a working `mail` command and mail transport agent for the reports to be delivered.
