@@ -1,0 +1,26 @@
+---
+- name: Prepare
+  hosts: all
+  gather_facts: false
+  tasks:
+    # The minimal container images lack Python, which Ansible needs, and
+    # adduser, which any real Debian or Ubuntu system has and rkhunter's
+    # default configuration expects. EL images already have Python.
+    - name: Install Python and adduser
+      ansible.builtin.raw: >-
+        command -v python3 ||
+        if command -v apt-get; then apt-get update && apt-get install -y python3 adduser;
+        elif command -v zypper; then zypper --non-interactive install python3;
+        fi
+      register: prepare_python
+      changed_when: "'python3' not in prepare_python.stdout"
+
+    # Older versions of the role added CISOfy's repository for the release
+    # codename, which no longer exists and breaks apt-get update
+    - name: Add the APT repository of older versions of the role
+      ansible.builtin.raw: >-
+        if command -v apt-get; then
+        . /etc/os-release;
+        echo "deb https://packages.cisofy.com/community/lynis/deb/ $VERSION_CODENAME main"
+        > /etc/apt/sources.list.d/cisofy-lynis.list; fi
+      changed_when: true

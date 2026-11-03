@@ -1,0 +1,40 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+  # Weekly, to catch changes in the distributions' packages
+  schedule:
+    - cron: '0 6 * * 1'
+  workflow_dispatch:
+
+jobs:
+  lint:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v7
+      - uses: actions/setup-python@v7
+        with:
+          python-version: '3.14'
+      - run: pip install -r requirements-dev.txt
+      - run: ansible-lint
+
+  molecule:
+    name: Molecule (${{ matrix.method }})
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        method: [tar, git, pkg, distro]
+    steps:
+      - uses: actions/checkout@v7
+      - uses: actions/setup-python@v7
+        with:
+          python-version: '3.14'
+      - run: pip install -r requirements-dev.txt
+      - run: molecule test
+        env:
+          LYNIS_DEPLOY_METHOD: ${{ matrix.method }}
+          PY_COLORS: '1'
+          ANSIBLE_FORCE_COLOR: '1'

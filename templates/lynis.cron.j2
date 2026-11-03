@@ -1,34 +1,25 @@
 #!/bin/bash
-set -x
+# {{ ansible_managed }}
+# Runs a Lynis audit and mails the report.
+set -u
 
-AUDITOR="automated"
 DATE=$(date +%Y%m%d)
 HOST=$(hostname)
-LOG_DIR="/var/log/lynis"
+LOG_DIR=/var/log/lynis
 REPORT="$LOG_DIR/report-${HOST}.${DATE}.log"
 DATA="$LOG_DIR/report-data-${HOST}.${DATE}.log"
-LOG_EXPIRE={{ lynis_log_expire }}
 
-FROM="{{ lynis_report_from }}"
-TO="{{ lynis_report_to }}"
-
-{% if lynis_deploy_method == "pkg" %}
-{% if ansible_os_family == 'Debian' %}
-LYNIS_PATH="/usr/sbin/lynis"
+{% if lynis_deploy_method in ['tar', 'git'] %}
+# Lynis finds its include files relative to the current directory
+cd "{{ lynis_home }}" || exit 1
+LYNIS=./lynis
 {% else %}
-LYNIS_PATH="/usr/bin/lynis"
+LYNIS=lynis
+PATH=/usr/sbin:/usr/bin:$PATH
 {% endif %}
-$LYNIS_PATH audit system --auditor "${AUDITOR}" --cronjob > ${REPORT}
-{% else %}
-cd /opt/lynis
-{% if lynis_deploy_method == "git" %}
-git pull
-{% endif %}
-./lynis audit system --auditor "${AUDITOR}" --cronjob > ${REPORT}
-{% endif %}
-mv /var/log/lynis-report.dat ${DATA}
+"$LYNIS" audit system --auditor automated --cronjob --report-file "$DATA" > "$REPORT" 2>&1
 
-find $LOG_DIR -type f -mtime +$LOG_EXPIRE -delete -print
+find "$LOG_DIR" -type f -mtime +{{ lynis_log_expire }} -delete
 
-echo "Lynis audit for ${HOST} on ${DATE}: ${REPORT}" |
-/usr/bin/mail -s "${HOST}: Lynis audit (${DATE})" -r ${FROM} -a ${REPORT} ${TO}
+mail -s "${HOST}: Lynis audit (${DATE})" -r "{{ lynis_report_from }}" \
+  "{{ lynis_report_to }}" < "$REPORT"

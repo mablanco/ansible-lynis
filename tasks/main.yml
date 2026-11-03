@@ -1,109 +1,75 @@
 ---
-# tasks file for mablanco.lynis
-
-- name: Lynis | lynis_report_from should be defined
-  assert:
+- name: Lynis | Check the role variables
+  ansible.builtin.assert:
     that:
-    - lynis_report_from is defined and lynis_report_from | length > 0
-    msg: "Set the value of 'lynis_report_from' in either the inventory file or the playbook invoking this role."
+      - lynis_report_from | length > 0
+      - lynis_report_to | length > 0
+      - lynis_deploy_method in ['tar', 'git', 'pkg', 'distro']
+    fail_msg: >-
+      Set lynis_report_from and lynis_report_to, and set lynis_deploy_method
+      to tar, git, pkg or distro.
+    quiet: true
 
-- name: Lynis | lynis_report_to should be defined
-  assert:
-    that:
-    - lynis_report_to is defined and lynis_report_to | length > 0
-    msg: "Set the value of 'lynis_report_to' in either the inventory file or the playbook invoking this role."
+# Older versions of this role added CISOfy's repository for a codename that
+# CISOfy no longer publishes, which makes apt fail to update its cache
+- name: Lynis | Remove the APT repository of older versions of this role
+  ansible.builtin.file:
+    path: /etc/apt/sources.list.d/cisofy-lynis.list
+    state: absent
+  when: ansible_facts['os_family'] == 'Debian'
 
-- name: Lynis | create lynis home
-  file:
-    path: "{{ lynis_home }}"
-    mode: 0750
-    owner: root
-    group: root
-    state: directory
-  when: lynis_deploy_method in [ "tar", "git" ]
+- name: Lynis | Update the package cache (Debian)
+  ansible.builtin.apt:
+    update_cache: true
+    cache_valid_time: 3600
+  when: ansible_facts['os_family'] == 'Debian'
 
-- name: Lynis | install git cli client
-  package:
-    name: git
+- name: Lynis | Install Lynis
+  ansible.builtin.include_tasks: "install-{{ lynis_deploy_method }}.yml"
+
+- name: Lynis | Install cron
+  ansible.builtin.package:
+    name: "{{ 'cronie' if ansible_facts['os_family'] == 'RedHat' else 'cron' }}"
     state: present
-  when: lynis_deploy_method == "git"
 
-- name: Lynis | deploy lynis with git
-  git:
-    repo: "{{ lynis_git_repo }}"
-    clone: yes
-    dest: "{{ lynis_home }}"
-    force: yes
-    version: "master"
-  when: lynis_deploy_method == "git"
-
-- name: Lynis | deploy lynis with tar
-  include: tar.yml
-  when: lynis_deploy_method == "tar"
-
-- name: Lynis | deploy lynis with distro package
-  include: pkg.yml
-  when: lynis_deploy_method == "pkg"
-
-- name: Lynis | create man page directory
-  file:
-    path: /usr/local/share/man/man8/
-    mode: 0755
-    owner: root
-    group: root
-    state: directory
-  when: lynis_deploy_method in [ "tar", "git" ]
-
-- name: Lynis | install man page
-  copy:
-    src: "{{ lynis_home }}/lynis.8"
-    dest: "/usr/local/share/man/man8/"
-    mode: 0644
-    owner: root
-    group: root
-    remote_src: true
-  when: lynis_deploy_method in [ "tar", "git" ]
-
-- name: Lynis | create lynis etc directory
-  file:
+- name: Lynis | Create the configuration directory
+  ansible.builtin.file:
     path: /etc/lynis
-    mode: 0750
+    state: directory
     owner: root
     group: root
-    state: directory
-  when: lynis_deploy_method in [ "tar", "git" ]
+    mode: "0755"
 
-- name: Lynis | install custom profile
-  template:
+- name: Lynis | Install the custom profile
+  ansible.builtin.template:
     src: lynis.custom.prf.j2
     dest: /etc/lynis/custom.prf
     owner: root
     group: root
-    mode: 0640
-  when: lynis_deploy_method in [ "tar", "git", "pkg" ]
+    mode: "0640"
 
-- name: Lynis | create lynis log directory
-  file:
+- name: Lynis | Create the log directory
+  ansible.builtin.file:
     path: /var/log/lynis
-    mode: 0750
+    state: directory
     owner: root
     group: root
-    state: directory
+    mode: "0750"
 
-- name: Lynis | install cron job
-  template:
+- name: Lynis | Install the audit script
+  ansible.builtin.template:
     src: lynis.cron.j2
     dest: /usr/local/bin/lynis_cron.sh
     owner: root
     group: root
-    mode: 0750
+    mode: "0750"
 
-- name: Lynis | schedule weekly audit
-  cron:
-    name: "Launch Lynis security audit"
+- name: Lynis | Schedule the weekly audit
+  ansible.builtin.cron:
+    name: Launch Lynis security audit
     hour: "{{ lynis_cron_hour }}"
     minute: "{{ lynis_cron_minute }}"
     weekday: "{{ lynis_cron_dow }}"
-    cron_file: "lynis"
-    user: "root"
-    job: "/usr/local/bin/lynis_cron.sh 2>&1 | logger"
+    cron_file: lynis
+    user: root
+    job: /usr/local/bin/lynis_cron.sh 2>&1 | logger -t lynis

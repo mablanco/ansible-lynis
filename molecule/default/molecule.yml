@@ -1,0 +1,22 @@
+---
+driver:
+  name: docker
+platforms:
+  - name: debian12
+    image: debian:12.15-slim
+  - name: debian13
+    image: debian:13.7-slim
+  - name: ubuntu2404
+    image: ubuntu:24.04
+  - name: ubuntu2604
+    image: ubuntu:26.04
+  - name: rocky9
+    image: rockylinux/rockylinux:9
+  - name: rocky10
+    image: rockylinux/rockylinux:10
+  - name: leap16
+    image: opensuse/leap:16.0
+provisioner:
+  name: ansible
+  env:
+    ANSIBLE_ROLES_PATH: ../../..

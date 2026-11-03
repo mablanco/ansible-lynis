@@ -1,0 +1,17 @@
+---
+- name: Lynis | Create the manual page directory
+  ansible.builtin.file:
+    path: /usr/local/share/man/man8
+    state: directory
+    owner: root
+    group: root
+    mode: "0755"
+
+- name: Lynis | Install the manual page
+  ansible.builtin.copy:
+    src: "{{ lynis_home }}/lynis.8"
+    dest: /usr/local/share/man/man8/lynis.8
+    remote_src: true
+    owner: root
+    group: root
+    mode: "0644"

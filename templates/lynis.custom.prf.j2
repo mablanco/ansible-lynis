@@ -1,8 +1,7 @@
-# Lynis - Custom scan profile
+# {{ ansible_managed }}
+# Lynis custom profile
 
-# Skip a test (one per line)
-{% for item in lynis_tests_to_skip %}
-skip-test={{ item }}
+# Tests to skip
+{% for test in lynis_tests_to_skip %}
+skip-test={{ test }}
 {% endfor %}
-
-#EOF

@@ -1,0 +1,15 @@
+---
+# Rocky Linux, AlmaLinux and other rebuilds ship epel-release. On RHEL,
+# enable EPEL before running the role.
+- name: Lynis | Distro | Install EPEL
+  ansible.builtin.package:
+    name: epel-release
+    state: present
+  when:
+    - ansible_facts['os_family'] == 'RedHat'
+    - ansible_facts['distribution'] != 'RedHat'
+
+- name: Lynis | Distro | Install the package
+  ansible.builtin.package:
+    name: lynis
+    state: present
