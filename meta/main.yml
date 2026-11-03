@@ -1,19 +1,34 @@
+---
 galaxy_info:
+  role_name: lynis
+  namespace: mablanco
   author: Marco Antonio Blanco
-  description: Lynis security audit tool deployment
-  license: GPLv3
-  min_ansible_version: 2.1
+  description: Deploy Lynis, a security auditing tool, and schedule a weekly audit
+  license: GPL-3.0-only
+  min_ansible_version: "2.17"
+
   platforms:
-  - name: GenericUNIX
-    versions:
-    - all
-    - any
-  - name: GenericLinux
-    versions:
-    - all
-    - any
+    - name: Debian
+      versions:
+        - bookworm
+        - trixie
+    - name: Ubuntu
+      versions:
+        - noble
+        - resolute
+    - name: EL
+      versions:
+        - "9"
+        - "10"
+    # Galaxy's schema has no recent openSUSE versions. Tested on Leap 16.0.
+    - name: opensuse
+      versions:
+        - all
 
   galaxy_tags:
     - security
+    - audit
+    - lynis
+    - hardening
 
 dependencies: []

@@ -1,0 +1,4 @@
+---
+# The zypper module, which ansible.builtin.package uses on openSUSE
+collections:
+  - name: community.general

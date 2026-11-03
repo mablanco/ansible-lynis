@@ -1,0 +1,46 @@
+---
+- name: Verify
+  hosts: all
+  vars:
+    lynis_deploy_method: "{{ lookup('ansible.builtin.env', 'LYNIS_DEPLOY_METHOD') | default('tar', true) }}"
+    lynis_command: "{{ './lynis' if lynis_deploy_method in ['tar', 'git'] else 'lynis' }}"
+  tasks:
+    - name: Get the Lynis version
+      ansible.builtin.shell: "PATH=/usr/sbin:/usr/bin:$PATH {{ lynis_command }} show version"
+      args:
+        chdir: "{{ '/opt/lynis' if lynis_deploy_method in ['tar', 'git'] else '/' }}"
+      register: verify_version
+      changed_when: false
+
+    - name: Check the Lynis version
+      ansible.builtin.assert:
+        that: verify_version.stdout == '3.1.7'
+        fail_msg: "Expected Lynis 3.1.7, got {{ verify_version.stdout }}"
+      when: lynis_deploy_method != 'distro'
+
+    - name: Check that Lynis loads the custom profile
+      ansible.builtin.shell: >-
+        set -o pipefail &&
+        PATH=/usr/sbin:/usr/bin:$PATH {{ lynis_command }} show profiles | grep -q /etc/lynis/custom.prf
+      args:
+        chdir: "{{ '/opt/lynis' if lynis_deploy_method in ['tar', 'git'] else '/' }}"
+        executable: /bin/bash
+      changed_when: false
+
+    - name: Check that the custom profile skips the test
+      ansible.builtin.command: grep -qx skip-test=SSH-7408 /etc/lynis/custom.prf
+      changed_when: false
+
+    - name: Check the syntax of the audit script
+      ansible.builtin.command: bash -n /usr/local/bin/lynis_cron.sh
+      changed_when: false
+
+    - name: Check the weekly cron job
+      ansible.builtin.command: grep -q lynis_cron.sh /etc/cron.d/lynis
+      changed_when: false
+
+    - name: Check that the old APT repository is gone
+      ansible.builtin.stat:
+        path: /etc/apt/sources.list.d/cisofy-lynis.list
+      register: verify_old_repo
+      failed_when: verify_old_repo.stat.exists

@@ -1,0 +1,15 @@
+---
+- name: Lynis | Git | Install git
+  ansible.builtin.package:
+    name: git
+    state: present
+
+- name: Lynis | Git | Clone the release tag
+  ansible.builtin.git:
+    repo: "{{ lynis_git_repo }}"
+    dest: "{{ lynis_home }}"
+    version: "{{ lynis_version }}"
+    force: true
+
+- name: Lynis | Git | Install the manual page
+  ansible.builtin.import_tasks: install-manpage.yml

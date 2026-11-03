@@ -1,0 +1,13 @@
+---
+- name: Converge
+  hosts: all
+  vars:
+    lynis_deploy_method: "{{ lookup('ansible.builtin.env', 'LYNIS_DEPLOY_METHOD') | default('tar', true) }}"
+    lynis_report_from: sender@example.com
+    lynis_report_to: receiver@example.com
+    lynis_tests_to_skip:
+      - SSH-7408
+  tasks:
+    - name: Run the role
+      ansible.builtin.include_role:
+        name: "{{ lookup('ansible.builtin.env', 'MOLECULE_PROJECT_DIRECTORY') | basename }}"

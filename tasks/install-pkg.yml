@@ -1,0 +1,52 @@
+---
+# CISOfy's official repository, which has the latest release
+- name: Lynis | Pkg | Add CISOfy's repository (Debian)
+  when: ansible_facts['os_family'] == 'Debian'
+  block:
+    - name: Lynis | Pkg | Install the deb822_repository requirements (Debian)
+      ansible.builtin.apt:
+        name: python3-debian
+        state: present
+
+    - name: Lynis | Pkg | Add the repository (Debian)
+      ansible.builtin.deb822_repository:
+        name: cisofy-lynis
+        uris: https://packages.cisofy.com/community/lynis/deb/
+        suites: stable
+        components: main
+        signed_by: https://packages.cisofy.com/keys/cisofy-software-public.key
+
+    # Updating the cache here picks up the repository just added
+    - name: Lynis | Pkg | Install the package (Debian)
+      ansible.builtin.apt:
+        name: lynis
+        state: present
+        update_cache: true
+
+- name: Lynis | Pkg | Add CISOfy's repository (EL)
+  ansible.builtin.yum_repository:
+    name: lynis
+    description: CISOfy Software - Lynis package
+    baseurl: https://packages.cisofy.com/community/lynis/rpm/
+    gpgkey: https://packages.cisofy.com/keys/cisofy-software-rpms-public.key
+    gpgcheck: true
+  when: ansible_facts['os_family'] == 'RedHat'
+
+- name: Lynis | Pkg | Add CISOfy's repository (openSUSE)
+  when: ansible_facts['os_family'] == 'Suse'
+  block:
+    - name: Lynis | Pkg | Import the repository key (openSUSE)
+      ansible.builtin.rpm_key:
+        key: https://packages.cisofy.com/keys/cisofy-software-rpms-public.key
+
+    - name: Lynis | Pkg | Add the repository (openSUSE)
+      community.general.zypper_repository:
+        name: lynis
+        description: CISOfy Software - Lynis package
+        repo: https://packages.cisofy.com/community/lynis/rpm/
+
+- name: Lynis | Pkg | Install the package
+  ansible.builtin.package:
+    name: lynis
+    state: present
+  when: ansible_facts['os_family'] != 'Debian'

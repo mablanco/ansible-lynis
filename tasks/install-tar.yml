@@ -1,0 +1,29 @@
+---
+- name: Lynis | Tar | Create the installation directory
+  ansible.builtin.file:
+    path: "{{ lynis_home }}"
+    state: directory
+    owner: root
+    group: root
+    mode: "0750"
+
+- name: Lynis | Tar | Download the release
+  ansible.builtin.get_url:
+    url: "{{ lynis_url }}/{{ lynis_package }}"
+    dest: "/usr/local/src/lynis-{{ lynis_version }}.tar.gz"
+    checksum: "{{ lynis_tar_checksum }}"
+    owner: root
+    group: root
+    mode: "0644"
+
+- name: Lynis | Tar | Extract the release
+  ansible.builtin.unarchive:
+    src: "/usr/local/src/lynis-{{ lynis_version }}.tar.gz"
+    dest: "{{ lynis_home }}"
+    remote_src: true
+    owner: root
+    group: root
+    extra_opts: [--strip-components=1]
+
+- name: Lynis | Tar | Install the manual page
+  ansible.builtin.import_tasks: install-manpage.yml
