@@ -11,7 +11,7 @@ on:
 
 jobs:
   ci:
-    uses: mablanco/shared-github-workflows/.github/workflows/ansible-role-ci.yml@feat/ansible-role-ci
+    uses: mablanco/shared-github-workflows/.github/workflows/ansible-role-ci.yml@main
     with:
       # One run per installation method
       molecule-matrix: >-
