@@ -10,31 +10,12 @@ on:
   workflow_dispatch:
 
 jobs:
-  lint:
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v7
-      - uses: actions/setup-python@v7
-        with:
-          python-version: '3.14'
-      - run: pip install -r requirements-dev.txt
-      - run: ansible-lint
-
-  molecule:
-    name: Molecule (${{ matrix.method }})
-    runs-on: ubuntu-latest
-    strategy:
-      fail-fast: false
-      matrix:
-        method: [tar, git, pkg, distro]
-    steps:
-      - uses: actions/checkout@v7
-      - uses: actions/setup-python@v7
-        with:
-          python-version: '3.14'
-      - run: pip install -r requirements-dev.txt
-      - run: molecule test
-        env:
-          LYNIS_DEPLOY_METHOD: ${{ matrix.method }}
-          PY_COLORS: '1'
-          ANSIBLE_FORCE_COLOR: '1'
+  ci:
+    uses: mablanco/shared-github-workflows/.github/workflows/ansible-role-ci.yml@main
+    with:
+      # One run per installation method
+      molecule-matrix: >-
+        [{"name": "tar", "env": "LYNIS_DEPLOY_METHOD=tar"},
+         {"name": "git", "env": "LYNIS_DEPLOY_METHOD=git"},
+         {"name": "pkg", "env": "LYNIS_DEPLOY_METHOD=pkg"},
+         {"name": "distro", "env": "LYNIS_DEPLOY_METHOD=distro"}]
