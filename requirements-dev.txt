@@ -1,5 +1,5 @@
 # Tools to lint and test the role (Python 3.13 or later)
 ansible-core==2.22.0
-ansible-lint==26.10.1
+ansible-lint==26.11.0
 molecule==26.10.0
 molecule-plugins[docker]==26.11.0
